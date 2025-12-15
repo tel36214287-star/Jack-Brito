@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jack Brito GPT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&family=Impact&family=Georgia&family=Courier+Prime:wght@400;700&family=Arial&display=swap" rel="stylesheet">
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Base font-code for non-themed scenarios */
+      :root {
+        --font-code: 'Courier New', Courier, monospace;
+        /* Default scrollbar styles (can be overridden by themes) */
+        --scrollbar-thumb-bg: var(--color-border);
+        --scrollbar-thumb-hover-bg: var(--color-accent);
+        --color-chat-inset-shadow: rgba(0, 0, 0, 0.4); /* Default subtle shadow */
+      }
+      
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: var(--color-bg-primary); }
+      ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb-bg); border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover-bg); }
+
+      /* Cyberpunk Theme */
+      html.theme-cyberpunk {
+        --color-bg-primary: #040615; /* Even darker blue-black */
+        --color-bg-secondary: rgba(10, 12, 30, 0.95); /* More opaque, deep blue */
+        --color-border: #00E0FF; /* Bright cyan */
+        --color-text-primary: #E0E0E0; /* Bright White */
+        --color-text-secondary: #A0B0C0; /* Muted cool grey-blue */
+        --color-accent: #FF1493; /* Deep pink */
+        --color-accent-hover: #FF4DA6; /* Brighter deep pink */
+        --color-user-bubble: rgba(30, 40, 60, 0.8); /* Dark transparent blue-grey for user */
+        --color-ai-bubble: rgba(15, 20, 35, 0.9); /* Darker transparent blue-grey for AI */
+        --color-chat-inset-shadow: rgba(0, 224, 255, 0.6); /* Stronger cyan glow */
+        --font-primary: 'Orbitron', sans-serif;
+        --font-secondary: 'Rajdhani', sans-serif;
+        --font-code: 'Courier Prime', monospace; /* Specific code font for cyberpunk */
+        --scrollbar-thumb-bg: var(--color-border);
+        --scrollbar-thumb-hover-bg: var(--color-accent);
+      }
+      html.theme-cyberpunk body {
+        font-family: var(--font-secondary);
+        background-image: radial-gradient(circle at 50% 50%, rgba(15,20,35,0.2) 0%, rgba(4,6,21,1) 70%); /* Subtle radial glow */
+      }
+      html.theme-cyberpunk ::-webkit-scrollbar-thumb { border-radius: 0; }
+
+      /* HQ Theme */
+      html.theme-hq {
+        --color-bg-primary: #FDFDFF; /* Slightly creamy off-white */
+        --color-bg-secondary: #ffffff; /* White secondary background */
+        --color-border: #000000; /* Strong black border */
+        --color-text-primary: #000000; /* Black text */
+        --color-text-secondary: #4A4A4A; /* Dark grey secondary text */
+        --color-accent: #E62429; /* Vibrant comic red */
+        --color-accent-hover: #C71C20; /* Darker red on hover */
+        --color-user-bubble: #2D9CDB; /* Classic comic blue for user bubble */
+        --color-ai-bubble: #F0F0F0; /* Light grey for AI bubble */
+        --color-chat-inset-shadow: rgba(0, 0, 0, 0.2); /* Subtle black inset shadow */
+        --font-primary: 'Impact', sans-serif;
+        --font-secondary: 'Arial', sans-serif;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: #000000;
+        --scrollbar-thumb-hover-bg: #E62429;
+      }
+      html.theme-hq body { font-family: var(--font-secondary); }
+      html.theme-hq ::-webkit-scrollbar-thumb { border-radius: 2px; }
+
+      /* Halloween Theme */
+      html.theme-halloween {
+        --color-bg-primary: #110022; /* Deeper, darker purple */
+        --color-bg-secondary: rgba(25, 0, 45, 0.95); /* More opaque, rich dark purple */
+        --color-border: #BB00FF; /* Intense bright purple */
+        --color-text-primary: #FF8C00; /* Deep pumpkin orange */
+        --color-text-secondary: #707070; /* Muted grey */
+        --color-accent: #FF4500; /* Fiery orange */
+        --color-accent-hover: #CC3700; /* Darker fiery orange */
+        --color-user-bubble: rgba(255, 69, 0, 0.7); /* Transparent fiery orange */
+        --color-ai-bubble: rgba(25, 0, 45, 0.9); /* Dark transparent purple */
+        --color-chat-inset-shadow: rgba(187, 0, 255, 0.6); /* Stronger purple glow */
+        --font-primary: 'Impact', Charcoal, sans-serif;
+        --font-secondary: 'Impact', Charcoal, sans-serif;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: var(--color-accent);
+        --scrollbar-thumb-hover-bg: var(--color-accent-hover);
+      }
+      html.theme-halloween body { font-family: var(--font-secondary); }
+
+      /* Natal Theme */
+      html.theme-natal {
+        --color-bg-primary: #002D1E; /* Very deep forest green */
+        --color-bg-secondary: #004F3F; /* Slightly lighter green */
+        --color-border: #FFD700; /* Bright gold */
+        --color-text-primary: #FFFFFF; /* White */
+        --color-text-secondary: #E0E0E0; /* Off-white */
+        --color-accent: #CC0000; /* Classic strong red */
+        --color-accent-hover: #A00000; /* Darker red */
+        --color-user-bubble: rgba(204, 0, 0, 0.8); /* Transparent classic red */
+        --color-ai-bubble: rgba(0, 79, 63, 0.8); /* Transparent dark green */
+        --color-chat-inset-shadow: rgba(255, 215, 0, 0.6); /* Stronger gold glow */
+        --font-primary: 'Georgia', serif;
+        --font-secondary: 'Georgia', serif;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: var(--color-accent);
+        --scrollbar-thumb-hover-bg: var(--color-accent-hover);
+      }
+      html.theme-natal body { font-family: var(--font-secondary); }
+
+      /* Floral Theme */
+      html.theme-floral {
+        --color-bg-primary: #F8F0E3; /* Soft, warm cream */
+        --color-bg-secondary: #FBEFE8; /* Lighter cream */
+        --color-border: #DDA0DD; /* Plum/light purple */
+        --color-text-primary: #5A2D3C; /* Deep plum/burgundy */
+        --color-text-secondary: #8B4566; /* Muted berry */
+        --color-accent: #FF69B4; /* Hot pink for highlights */
+        --color-accent-hover: #DE5E9B; /* Darker hot pink */
+        --color-user-bubble: rgba(255, 105, 180, 0.7); /* Transparent hot pink */
+        --color-ai-bubble: rgba(251, 239, 232, 0.8); /* Transparent light cream */
+        --color-chat-inset-shadow: rgba(221, 160, 221, 0.6); /* Soft purple glow */
+        --font-primary: 'Georgia', serif;
+        --font-secondary: 'Georgia', serif;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: var(--color-accent);
+        --scrollbar-thumb-hover-bg: var(--color-accent-hover);
+      }
+      html.theme-floral body { font-family: var(--font-secondary); }
+
+      /* Matrix Theme */
+      html.theme-matrix {
+        --color-bg-primary: #000000;
+        --color-bg-secondary: rgba(0, 10, 0, 0.95); /* Very dark, almost black green */
+        --color-border: #00FF00;
+        --color-text-primary: #00FF00;
+        --color-text-secondary: #008000;
+        --color-accent: #39FF14;
+        --color-accent-hover: #7CFC00;
+        --color-user-bubble: rgba(0, 50, 0, 0.7);
+        --color-ai-bubble: rgba(0, 20, 0, 0.8);
+        --color-chat-inset-shadow: rgba(0, 255, 0, 0.6); /* Stronger green glow */
+        --font-primary: 'Courier New', monospace;
+        --font-secondary: 'Courier New', monospace;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: var(--color-border);
+        --scrollbar-thumb-hover-bg: var(--color-accent);
+      }
+      html.theme-matrix body { 
+        font-family: var(--font-secondary); 
+        background-image: linear-gradient(0deg, rgba(0,0,0,0) 90%, rgba(0,255,0,0.05) 90%), 
+                          linear-gradient(90deg, rgba(0,0,0,0) 98%, rgba(0,255,0,0.02) 98%);
+        background-size: 8px 8px; /* Subtle binary lines pattern */
+      }
+      html.theme-matrix header {
+        box-shadow: 0 0 15px var(--color-border), 0 0 30px var(--color-accent);
+      }
+      html.theme-matrix header h1 {
+        text-shadow: 0 0 8px var(--color-accent), 0 0 15px var(--color-accent), 0 0 25px var(--color-border);
+      }
+
+      /* Valentine Theme */
+      html.theme-valentine {
+        --color-bg-primary: #3A0020; /* Dark romantic red-purple */
+        --color-bg-secondary: rgba(107, 0, 74, 0.8); /* Lighter, transparent pink-purple */
+        --color-border: #FF69B4; /* Hot Pink */
+        --color-text-primary: #FFDBE9; /* Light pink */
+        --color-text-secondary: #FFC0CB; /* Muted Rose */
+        --color-accent: #E91E63; /* Deep vibrant red */
+        --color-accent-hover: #F06292; /* Slightly brighter red */
+        --color-user-bubble: rgba(233, 30, 99, 0.7); /* Transparent deep vibrant red */
+        --color-ai-bubble: rgba(107, 0, 74, 0.7); /* Transparent dark pink-purple */
+        --color-chat-inset-shadow: rgba(255, 105, 180, 0.6); /* Stronger hot pink glow */
+        --font-primary: 'Georgia', serif;
+        --font-secondary: 'Georgia', serif;
+        --font-code: 'Courier New', monospace;
+        --scrollbar-thumb-bg: var(--color-accent);
+        --scrollbar-thumb-hover-bg: var(--color-accent-hover);
+      }
+      html.theme-valentine body { font-family: var(--font-secondary); }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
+    "react-json-pretty": "https://esm.sh/react-json-pretty@2.2.0",
+    "react-json-pretty/": "https://esm.sh/react-json-pretty@2.2.0/",
+    "pyodide": "https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.mjs"
+  }
+}
+</script>
+</head>
+<body class="bg-[var(--color-bg-primary)]">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

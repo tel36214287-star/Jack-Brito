@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Jack Brito GPT (nome da vizinha)",
+  "description": "A sofisticada assistente de IA, Jack Brito GPT, alimentada por Gemini, projetada para fornecer conversas inteligentes, envolventes e agora também geração de imagens em português. Pergunte-me qualquer coisa!",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
